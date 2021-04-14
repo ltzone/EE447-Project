@@ -31,51 +31,51 @@
         absolute
         color="grey lighten-3"
         mini-variant
+        class="justify-space-between align-center"
       >
-        <v-avatar
-          class="d-block text-center mx-auto mt-4"
-          color="blue darken-1"
-          size="36"
-        >
-          <v-icon dark> mdi-account-circle </v-icon>
-        </v-avatar>
+        <v-btn fab dark
+          to="/" class="mt-4 mx-5"
+          color="blue darken-1" small elevation="1"
+          ><v-icon dark> mdi-account-circle </v-icon>
+        </v-btn>
 
         <v-divider class="mx-3 my-5"></v-divider>
 
-        <v-avatar
-          class="d-block text-center mx-auto mb-9"
-          color="yellow darken-3"
-          size="28"
-          ><v-icon dark> mdi-alert-decagram </v-icon>
-        </v-avatar>
-
-        <v-avatar
-          class="d-block text-center mx-auto mb-9"
-          color="purple lighten-1"
-          size="28"
+        <v-btn fab dark
+          to="/task" class="my-2 mx-6"
+          color="purple lighten-1" x-small elevation="1"
           ><v-icon dark> mdi-file-tree </v-icon>
-        </v-avatar>
+        </v-btn>
 
-        <v-avatar
-          class="d-block text-center mx-auto mb-9"
-          color="green lighten-1"
-          size="28"
+        <v-btn fab dark
+          to="/log" class="my-2 mx-6"
+          color="yellow lighten-1" x-small elevation="1"
+          ><v-icon dark> mdi-alert-decagram </v-icon>
+        </v-btn>
+
+        <v-btn fab dark
+          to="/stat" class="my-2 mx-6"
+          color="green lighten-1" x-small elevation="1"
           ><v-icon dark> mdi-equalizer </v-icon>
-        </v-avatar>
+        </v-btn>
 
-        <v-avatar
-          class="d-block text-center mx-auto mb-9"
-          color="blue lighten-1"
-          size="28"
+        <v-btn fab dark
+          to="/app" class="my-2 mx-6"
+          color="blue lighten-1" x-small elevation="1"
           ><v-icon dark> mdi-application </v-icon>
-        </v-avatar>
+        </v-btn>
 
-        <v-avatar
-          class="d-block text-center mx-auto mb-9"
-          color="red lighten-1"
-          size="28"
+        <v-btn fab dark
+          to="/monitor" class="my-2 mx-6"
+          color="red lighten-1" x-small elevation="1"
           ><v-icon dark> mdi-eye </v-icon>
-        </v-avatar>
+        </v-btn>
+
+        <v-btn fab dark
+          to="/about" class="my-2 mx-6"
+          color="grey lighten-1" x-small elevation="1"
+          ><v-icon> mdi-information </v-icon>
+        </v-btn>
       </v-navigation-drawer>
 
       <v-sheet color="grey lighten-5" height="128" width="100%">
@@ -101,6 +101,7 @@
     </v-navigation-drawer>
 
     <v-main>
+      <router-view/>
       <!--  -->
     </v-main>
   </v-app>
@@ -111,3 +112,28 @@ export default {
   data: () => ({ drawer: null }),
 };
 </script>
+
+
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}
+</style>
