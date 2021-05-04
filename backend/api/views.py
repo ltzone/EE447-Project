@@ -13,3 +13,7 @@ def ctest(request,*args,**kwargs):
     res=tasks.hello.delay()  
     #任务逻辑  
     return JsonResponse({'status':'successful','task_id':res.task_id})
+
+def sleep(request,*args,**kwargs):  
+    res=tasks.sleep_task.delay()
+    return JsonResponse({'status':'successful','task_id':res.task_id})
