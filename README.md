@@ -18,4 +18,12 @@ Distributed Computing Platform
 2. `pip install -r requirements.txt`
 3. `python manage.py migrate`
 4. `python manage.py runserver`
+5. `celery -A backend.celery worker -l INFO` to start the server
+
+Seems to be an easy way to setup broker and database
+
+```
+docker run -d -p 5672:5672 rabbitmq
+docker run -d -p 6379:6379 redis
+```
 
