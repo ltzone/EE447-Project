@@ -18,7 +18,9 @@ Distributed Computing Platform
 2. `pip install -r requirements.txt`
 3. `python manage.py migrate`
 4. `python manage.py runserver`
-5. `celery -A backend.celery worker -l INFO` to start the server
+5. `celery -A backend.celery worker -l INFO -E` to start the server
+6. `celery -A backend.celery events -l info --camera django_celery_monitor.camera.Camera --frequency=2.0` to start the monitor
+
 
 Seems to be an easy way to setup broker and database
 

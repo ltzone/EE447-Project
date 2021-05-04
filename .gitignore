@@ -1,3 +1,5 @@
+celeryev.pid
+
 .DS_store
 venv/
 
