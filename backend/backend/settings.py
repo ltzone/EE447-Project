@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from .secret import secret
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,7 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CELERY SETTINGS:
 
-CELERY_BROKER_URL = 'amqp://localhost'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = f'amqp://{secret}@ltzhou.com/distributed'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
