@@ -3,10 +3,11 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, TaskResSerializer
 from django_celery_results.models import TaskResult
 # Create your views here.
 from . import tasks
+from django_celery_monitor.models import TaskState
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -44,8 +45,14 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-def task_list(request):
+def task_result_list(request):
     if request.method == 'GET':
         res = TaskResult.objects.all()
+        serializer = TaskResSerializer(res, many=True)
+        return JSONResponse(serializer.data)
+
+def task_list(request):
+    if request.method == 'GET':
+        res = TaskState.objects.all()
         serializer = TaskSerializer(res, many=True)
         return JSONResponse(serializer.data)
