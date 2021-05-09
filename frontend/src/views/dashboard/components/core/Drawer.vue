@@ -101,6 +101,11 @@
           to: '/distributed/task',
         },
         {
+          icon: 'mdi-file-tree',
+          title: 'TaskResult',
+          to: '/distributed/taskresult',
+        },
+        {
           icon: 'mdi-equalizer',
           title: 'Statistics',
           to: '/distributed/stat',
