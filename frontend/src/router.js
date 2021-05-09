@@ -23,6 +23,11 @@ export default new Router({
           component: () => import('@/views/distributed/Monitor'),
         },
         {
+          path: 'distributed/submit',
+          name: 'Submit',
+          component: () => import('@/views/distributed/Submit'),
+        },
+        {
           path: 'distributed/stat',
           name: 'Stat',
           component: () => import('@/views/distributed/Stat'),

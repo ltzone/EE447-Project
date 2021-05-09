@@ -8,6 +8,20 @@ from django_celery_results.models import TaskResult
 # Create your views here.
 from . import tasks
 from django_celery_monitor.models import TaskState
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+@api_view(['POST'])
+def submit_task(request):
+    """
+    获取，更新或删除一个snippet实例。
+    """
+    code = request.data["code"]
+    res=tasks.general_exec.delay(code)  
+    #任务逻辑  
+    return Response({'status':'successful','task_id':res.task_id})
 
 def index(request):
     return HttpResponse("Hello, world. You're at the api index.")

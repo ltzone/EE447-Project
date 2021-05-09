@@ -1,5 +1,8 @@
 <template>
-  <div class="application">
+  <v-container
+    id="regular-tables"
+    fluid
+  >
     <h1>This is application page</h1>
-  </div>
+  </v-container>
 </template>
