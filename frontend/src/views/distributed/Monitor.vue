@@ -8,6 +8,24 @@
       :value="running_tasks[0].name"
       hint="Hint text"
     ></v-textarea>
+
+    <v-col
+      cols="12"
+      md="6"
+    >
+      <v-textarea
+        solo
+        name="input-7-4"
+        label="Solo t"
+      ></v-textarea>
+    </v-col>
+
+    <input
+      v-model="message"
+      placeholder="edit me"
+    >
+    <p>Message is: {{ message }}</p>
+
   </v-container>
 </template>
 
