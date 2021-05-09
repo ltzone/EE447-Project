@@ -6,7 +6,7 @@
           <v-textarea
             name="input-7-1"
             label="Default style"
-            :value="code"
+            v-model="code"
             hint="Hint text"
           ></v-textarea>
         </v-col>
@@ -48,13 +48,14 @@
             eta: '70min',
           },
         ],
-        code: 'Input your code here',
+        code: 'def main():\n\treturn "Hello World!"\n',
         res: null,
       }
     },
 
     methods: {
       submit_code () {
+        console.log(this.code)
         server.post('/submit', {
           code: this.code,
         }).then(res => {

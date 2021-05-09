@@ -17,8 +17,7 @@ def submit_task(request):
     """
     获取，更新或删除一个snippet实例。
     """
-    print(request.data)
-    code = request.data.code
+    code = request.data["code"]
     res=tasks.general_exec.delay(code)  
     #任务逻辑  
     return Response({'status':'successful','task_id':res.task_id})
