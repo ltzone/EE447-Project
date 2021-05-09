@@ -116,6 +116,11 @@
           to: '/distributed/monitor',
         },
         {
+          icon: 'mdi-arrow-up-box',
+          title: 'Submit',
+          to: '/distributed/submit',
+        },
+        {
           icon: 'mdi-information',
           title: 'About',
           to: '/distributed/information',
