@@ -49,6 +49,7 @@
           },
         ],
         code: 'Input your code here',
+        res: null,
       }
     },
 
@@ -57,6 +58,8 @@
         server.post('/submit', {
           code: this.code,
         }).then(res => {
+          this.res = res
+          console.log(res)
           console.log('yes')
         }, error => {
           console.log(error)

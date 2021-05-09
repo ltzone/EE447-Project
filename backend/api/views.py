@@ -13,10 +13,11 @@ from rest_framework.response import Response
 
 
 @api_view(['POST'])
-def submit_task(request, pk):
+def submit_task(request):
     """
     获取，更新或删除一个snippet实例。
     """
+    print(request.data)
     code = request.data.code
     res=tasks.general_exec.delay(code)  
     #任务逻辑  
