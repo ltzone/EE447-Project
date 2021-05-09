@@ -18,12 +18,10 @@
     },
 
     mounted () {
-      server.get('/', {
-        param: 'param1',
-      }).then(
+      server.get('/').then(
         res => {
           this.data = res.data
-          vm.$toasted.global.alert_success(res.data)
+          vm.$toasted.global.alert_info(res.data)
         },
         error => {
           this.data = error
