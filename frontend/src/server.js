@@ -1,5 +1,5 @@
 import axios from 'axios'
-import vm from './main.js'
+import vm from '@/main.js'
 
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN'

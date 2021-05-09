@@ -42,7 +42,7 @@ Vue.use(VueToasted, {
 
 // register custom toasts
 Vue.toasted.register('alert_success',
-  payload => payload, { type: 'success', icon: 'check', duration: null },
+  payload => payload, { type: 'success', icon: 'check', duration: 2500 },
 )
 
 Vue.toasted.register('alert_info',

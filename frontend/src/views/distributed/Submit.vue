@@ -12,12 +12,6 @@
       <v-row>
         <v-col>
           <v-btn
-            text
-          >
-            Clear
-          </v-btn>
-          <v-spacer />
-          <v-btn
             class="white--text"
             color="deep-purple accent-4"
             depressed
@@ -33,6 +27,7 @@
 
 <script>
   import server from '@/server.js'
+  import vm from '@/main.js'
   import 'codemirror/mode/python/python.js'
   import 'codemirror/theme/solarized.css'
   export default {
@@ -69,10 +64,10 @@
           code: this.code,
         }).then(res => {
           this.res = res
-          console.log(res)
-          console.log('yes')
+          vm.$toasted.global.alert_success('Task Submitted, id: ' + res.data.task_id)
         }, error => {
           console.log(error)
+          vm.$toasted.global.alert_failure('Task Submit Fails')
         })
       },
     },
