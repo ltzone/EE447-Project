@@ -27,6 +27,9 @@ import VueToasted from 'vue-toasted'
 import VueLodash from 'vue-lodash'
 import lodash from 'lodash'
 
+import VueCodemirror from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+
 Vue.use(VueLodash, { lodash: lodash })
 Vue.use(VueToasted, {
   iconPack: 'material',
@@ -96,6 +99,11 @@ Vue.filter('formatDate', function (value) {
 })
 
 Vue.use(vueDebounce)
+
+Vue.use(VueCodemirror, /* {
+  options: { theme: 'base16-dark', ... },
+  events: ['scroll', ...]
+} */)
 
 Vue.config.productionTip = false
 

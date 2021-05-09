@@ -7,7 +7,7 @@
       label="Default style"
       :value="running_tasks[0].name"
       hint="Hint text"
-    ></v-textarea>
+    />
 
     <v-col
       cols="12"
@@ -17,7 +17,7 @@
         solo
         name="input-7-4"
         label="Solo t"
-      ></v-textarea>
+      />
     </v-col>
 
     <input
@@ -25,7 +25,6 @@
       placeholder="edit me"
     >
     <p>Message is: {{ message }}</p>
-
   </v-container>
 </template>
 

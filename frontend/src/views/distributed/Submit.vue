@@ -1,22 +1,22 @@
 <template>
   <v-container>
-    <v-row class="px-16 py-3 align-items">
+    <v-row class="px-16 py-3 justify-items">
       <v-row>
         <v-col>
-          <v-textarea
-            name="input-7-1"
-            label="Default style"
+          <codemirror
             v-model="code"
-            hint="Hint text"
-          ></v-textarea>
+            :options="cmOptions"
+          />
         </v-col>
       </v-row>
       <v-row>
-        <v-actions>
+        <v-col>
           <v-btn
             text
-          >Clear</v-btn>
-          <v-spacer></v-spacer>
+          >
+            Clear
+          </v-btn>
+          <v-spacer />
           <v-btn
             class="white--text"
             color="deep-purple accent-4"
@@ -25,7 +25,7 @@
           >
             Submit
           </v-btn>
-        </v-actions>
+        </v-col>
       </v-row>
     </v-row>
   </v-container>
@@ -33,9 +33,10 @@
 
 <script>
   import server from '@/server.js'
-
+  import 'codemirror/mode/python/python.js'
+  import 'codemirror/theme/solarized.css'
   export default {
-    name: 'Application',
+    name: 'Submit',
     components: {},
     data () {
       return {
@@ -48,7 +49,15 @@
             eta: '70min',
           },
         ],
-        code: 'def main():\n\treturn "Hello World!"\n',
+        code: 'def main():\n    """\n    Write anything in anywhere!\n    As long as your result is returned in this function\n    """\n    return "Hello World!"\n',
+        cmOptions: {
+          tabSize: 4,
+          mode: 'python',
+          theme: 'solarized',
+          lineNumbers: true,
+          line: true,
+          // more CodeMirror options...
+        },
         res: null,
       }
     },
@@ -69,3 +78,11 @@
     },
   }
 </script>
+
+<style scoped>
+.CodeMirror {
+  /* border: 1px solid #eee; */
+  height: auto;
+  width: 80%;
+}
+</style>
