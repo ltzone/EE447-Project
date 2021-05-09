@@ -1,6 +1,8 @@
 import os
 import time
 from celery import Celery
+from celery import chord
+import random
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
@@ -24,16 +26,16 @@ def debug_task(self):
 @app.task(name='ic.mapper')
 def mapper():
     #split your problem in embarrassingly parallel maps 
-    maps = [map.s(), map.s(), map.s(), map.s(), map.s(), map.s(), map.s(), map.s()]
+    maps = [map.s(), map.s(), map.s()]
     #and put them in a chord that executes them in parallel and after they finish calls 'reduce'
-    mapreduce = app.chord(maps)(reduce.s())    
+    mapreduce = chord(maps)(reduce.s())    
     return "{0} mapper ran on {1}".format(app.current_task.request.id, app.current_task.request.hostname)
 
 @app.task(name='ic.map')
 def map():
     #do something useful here
     import time
-    time.sleep(10.0)
+    time.sleep(random.randint(0,5))
     return "{0} map ran on {1}".format(app.current_task.request.id, app.current_task.request.hostname)
 
 @app.task(name='ic.reduce')

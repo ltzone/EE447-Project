@@ -11,6 +11,7 @@ from django_celery_monitor.models import TaskState
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from backend.celery import mapper
 
 
 @api_view(['POST'])
@@ -27,7 +28,7 @@ def index(request):
     return HttpResponse("Hello, world. You're at the api index.")
 
 def ctest(request,*args,**kwargs):  
-    res=tasks.hello.delay()  
+    res=mapper.delay()  
     #任务逻辑  
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
