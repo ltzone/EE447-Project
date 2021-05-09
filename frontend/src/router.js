@@ -38,6 +38,11 @@ export default new Router({
           component: () => import('@/views/distributed/Tasks'),
         },
         {
+          path: 'distributed/taskresult',
+          name: 'TaskResult',
+          component: () => import('@/views/distributed/TaskResult'),
+        },
+        {
           path: 'distributed/log',
           name: 'Log',
           component: () => import('@/views/distributed/Log'),
