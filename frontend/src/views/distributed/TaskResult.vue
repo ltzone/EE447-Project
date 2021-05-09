@@ -127,14 +127,19 @@
           for (var i = 0; i < res.data.length; i++) {
             // var ob = { id: 'eed', task_name: 'e', status: 'dd', worker: '', date_done: '' }
             if (res.data[i].status) {
-              ta.push(res.data[i])
+              ob.id = res.data[i].task_id
+              ob.task_name = res.data[i].task_name
+              ob.status = res.data[i].status
+              ob.worker = res.data[i].worker
+              ob.date_done = res.data[i].date_done
+              ta.push(ob)
             }
           }
 
-          this.running_tasks = ta
+          this.desserts = ta
         },
         error => {
-          this.running_tasks = error
+          this.desserts = error
         })
     },
   }
