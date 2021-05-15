@@ -1,8 +1,6 @@
 import time
 from celery import shared_task
 
-
-
 @shared_task
 def general_exec(code):
     if type(code) is not str:
@@ -12,7 +10,6 @@ def general_exec(code):
     ldict = {}
     exec(code,globals(),ldict)
     return ldict.get("ret_val")
-
 
 @shared_task
 def hello():

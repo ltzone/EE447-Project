@@ -11,7 +11,7 @@ from django_celery_monitor.models import TaskState
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from backend.celery import mapper
+from ..backend.celery import mapper
 
 
 @api_view(['POST'])
@@ -45,15 +45,28 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-
+@api_view(['GET'])
 def task_result_list(request):
-    if request.method == 'GET':
-        res = TaskResult.objects.all()
-        serializer = TaskResSerializer(res, many=True)
-        return JSONResponse(serializer.data)
+    res = TaskResult.objects.all()
+    serializer = TaskResSerializer(res, many=True)
+    return JSONResponse(serializer.data)
 
+@api_view(['GET'])
 def task_list(request):
-    if request.method == 'GET':
-        res = TaskState.objects.all()
-        serializer = TaskSerializer(res, many=True)
-        return JSONResponse(serializer.data)
+    res = TaskState.objects.all()
+    serializer = TaskSerializer(res, many=True)
+    return JSONResponse(serializer.data)
+
+@api_view(['GET'])
+def filter_task(request):
+    query_state = request.data["state"]
+    res = TaskState.objects.filter(state=query_state)
+    serializer = TaskSerializer(res, many=True)
+    return JSONResponse(serializer.data)
+
+@api_view(['GET'])
+def filter_task_result(request):
+    query_state = request.data["state"]
+    res = TaskResult.objects.filter(state=query_state)
+    serializer = TaskResSerializer(res, many=True)
+    return JSONResponse(serializer.data)

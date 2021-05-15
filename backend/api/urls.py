@@ -9,5 +9,7 @@ urlpatterns = [
     path('tasks', views.task_list),
     path('test', views.ctest),
     path('sleep', views.sleep),
-    path('submit', views.submit_task)
+    path('submit', views.submit_task),
+    path('filtask', views.filter_task),
+    path('filres', views.filter_task_result)
 ]
