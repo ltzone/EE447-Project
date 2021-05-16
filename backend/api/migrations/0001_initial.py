@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('celery_monitor', '0003_auto_20210516_2209'),
     ]
 
     operations = [
