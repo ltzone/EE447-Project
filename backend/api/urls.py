@@ -9,5 +9,6 @@ urlpatterns = [
     path('tasks', views.task_list),
     path('test', views.ctest),
     path('sleep', views.sleep),
-    path('submit', views.submit_task)
+    path('submit', views.submit_task),
+    path('mapreduce', views.submit_map_reduce)
 ]

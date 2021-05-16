@@ -125,7 +125,7 @@
         res => {
           var ta = []
           for (var i = 0; i < res.data.length; i++) {
-            // var ob = { id: 'eed', task_name: 'e', status: 'dd', worker: '', date_done: '' }
+            var ob = { id: 'eed', task_name: 'e', status: 'dd', worker: '', date_done: '' }
             if (res.data[i].status) {
               ob.id = res.data[i].task_id
               ob.task_name = res.data[i].task_name
