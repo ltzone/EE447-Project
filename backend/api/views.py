@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from .serializers import TaskSerializer, TaskResSerializer
+from .serializers import TaskSerializer, TaskResSerializer, TaskwithCustomTaskNameSerializer
 from django_celery_results.models import TaskResult
 # Create your views here.
 from . import tasks
+from .tasks import TaskwithCustomTaskName
 from django_celery_monitor.models import TaskState
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -45,7 +46,6 @@ def submit_task(request):
     """
     code = request.data["code"]
     res=tasks.general_exec.delay(code)
-    #任务逻辑  
     return Response({'status':'successful','task_id':res.task_id})
 
 def index(request):
@@ -56,7 +56,7 @@ def ctest(request,*args,**kwargs):
     #任务逻辑  
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
-def sleep(request,*args,**kwargs):  
+def sleep(request,*args,**kwargs):
     res=tasks.sleep_task.delay()
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
@@ -69,15 +69,35 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-
+@api_view(['GET'])
 def task_result_list(request):
-    if request.method == 'GET':
-        res = TaskResult.objects.all()
-        serializer = TaskResSerializer(res, many=True)
-        return JSONResponse(serializer.data)
+    res = TaskResult.objects.all()
+    serializer = TaskResSerializer(res, many=True)
+    return JSONResponse(serializer.data)
 
+@api_view(['GET'])
 def task_list(request):
-    if request.method == 'GET':
-        res = TaskState.objects.all()
-        serializer = TaskSerializer(res, many=True)
-        return JSONResponse(serializer.data)
+    res = TaskState.objects.all()
+    serializer = TaskSerializer(res, many=True)
+    return JSONResponse(serializer.data)
+
+# 用法: http://127.0.0.1:8000/api/filtertask?state=SUCCESS 返回json，下同
+@api_view(['GET'])
+def filter_task(request:HttpRequest):
+    query_state = request.GET['state'] # request.GET返回的是QueryDict类型的字典
+    res = TaskState.objects.filter(state=query_state)
+    serializer = TaskSerializer(res, many=True)
+    return JSONResponse(serializer.data)
+
+@api_view(['GET'])
+def filter_task_result(request):
+    query_state = request.GET['state']
+    res = TaskResult.objects.filter(status=query_state)
+    serializer = TaskResSerializer(res, many=True)
+    return JSONResponse(serializer.data)
+
+@api_view(['GET'])
+def task_list_with_customtaskname(request):
+    res = TaskwithCustomTaskName.objects.all()
+    serializer = TaskwithCustomTaskNameSerializer(res, many=True)
+    return JSONResponse(serializer.data)
