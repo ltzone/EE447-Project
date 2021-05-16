@@ -13,6 +13,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from backend.celery import mapper
+from .models import TaskName
+
 
 MAX_FILE_LEN = 1000000
 
@@ -45,7 +47,12 @@ def submit_task(request):
     获取，更新或删除一个snippet实例。
     """
     code = request.data["code"]
+    task_name = request.data.get("task_name")
+    if task_name is None:
+        task_name = "default_name"
     res=tasks.general_exec.delay(code)
+    new_task = TaskName(task_name=task_name, task_id=res.task_id)
+    new_task.save()
     return Response({'status':'successful','task_id':res.task_id})
 
 def index(request):
