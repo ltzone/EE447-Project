@@ -5,58 +5,15 @@
   >
     <base-material-card
       icon="mdi-clipboard-text"
-      title="On Running Tasks"
+      title="Success Tasks"
       class="px-5 py-3"
     >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              ID
-            </th>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              Name
-            </th>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              State
-            </th>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              When
-            </th>
-            <th
-              class="primary--text text--right"
-              scope="col"
-            >
-              Worker
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="task in running_tasks"
-            :key="task.id"
-          >
-            <td>{{ task.id }}</td>
-            <td>{{ task.name }}</td>
-            <td>{{ task.state }}</td>
-            <td>{{ task.when }}</td>
-            <td>{{ task.worker }}</td>
-          </tr>
-        </tbody>
-      </v-simple-table>
+      <v-data-table
+        :headers="headers"
+        :items="success"
+        :items-per-page="5"
+        class="elevation-1"
+      />
     </base-material-card>
     <div class="py-3" />
     <base-material-card
@@ -66,55 +23,12 @@
       title="Other Tasks"
       class="px-5 py-3"
     >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              ID
-            </th>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              Name
-            </th>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              State
-            </th>
-            <th
-              class="primary--text"
-              scope="col"
-            >
-              When
-            </th>
-            <th
-              class="primary--text text--right"
-              scope="col"
-            >
-              Worker
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="task in other_tasks"
-            :key="task.id"
-          >
-            <td>{{ task.id }}</td>
-            <td>{{ task.name }}</td>
-            <td>{{ task.state }}</td>
-            <td>{{ task.when }}</td>
-            <td>{{ task.worker }}</td>
-          </tr>
-        </tbody>
-      </v-simple-table>
+      <v-data-table
+        :headers="headers2"
+        :items="others"
+        :items-per-page="5"
+        class="elevation-1"
+      />
     </base-material-card>
   </v-container>
 </template>
@@ -126,47 +40,57 @@
     components: {},
     data () {
       return {
-        running_tasks: [
+        headers: [
           {
-            id: 1,
-            name: 'Map Reduce',
-            state: 'Tony Zhou',
-            when: 'Map Reducing',
-            worker: '70min',
+            text: 'Task_ID',
+            align: 'start',
+            sortable: false,
+            value: 'id',
           },
+          { text: 'Task_Name', value: 'name' },
+          { text: 'State', value: 'state' },
+          { text: 'Worker', value: 'worker' },
+          { text: 'Runtime(s) ', value: 'runtime' },
         ],
-        other_tasks: [
+        headers2: [
           {
-            id: 1,
-            name: 'Map Reduce',
-            state: 'Tony Zhou',
-            when: 'Map Reducing',
-            worker: '70min',
+            text: 'Task_ID',
+            align: 'start',
+            sortable: false,
+            value: 'id',
           },
+          { text: 'Task_Name', value: 'name' },
+          { text: 'State', value: 'state' },
+          { text: 'Worker', value: 'worker' },
         ],
+        running: [],
+        others: [],
       }
     },
     mounted () {
-      server.get('/get').then(
+      server.get('/tasks').then(
         res => {
+          var task1 = []
+          var task2 = []
           for (var i = 0; i < res.data.length; i++) {
-            if (res.data[i].status === 'SUCCESS') {
-              this.other_tasks.push(res.data[i])
+            var ob = { id: '', name: '', state: '', worker: '' }
+            ob.id = res.data[i].task_id
+            ob.name = res.data[i].name
+            ob.state = res.data[i].state
+            ob.worker = res.data[i].worker
+            if (res.data[i].state === 'SUCCESS') {
+              ob.runtime = res.data[i].runtime
+              task1.push(ob)
+            } else {
+              task2.push(ob)
             }
           }
-
-          this.running_tasks = [
-            {
-              id: 122,
-              name: 'Map Reduce',
-              state: 'Success',
-              when: '2021-05-09',
-              worker: 'aaa',
-            },
-          ]
+          this.success = task1
+          this.others = task2
         },
         error => {
-          this.running_tasks = error
+          this.success = error
+          this.others = error
         })
     },
   }
