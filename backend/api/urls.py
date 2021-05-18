@@ -14,5 +14,6 @@ urlpatterns = [
     path('filtertask', views.filter_task),
     path('filterresult', views.filter_task_result),
     path('filterreduce', views.filter_reduce),
-    path('tasks2', views.task_list_with_customtaskname)
+    path('tasks2', views.task_list_with_customtaskname),
+    path('rdd', views.submit_general_rdd)
 ]

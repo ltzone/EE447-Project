@@ -114,6 +114,15 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <v-btn
+        color="indigo"
+        dark
+        @click="submit_taskML"
+        class="mx-4"
+      >
+        Submit Tasks
+      </v-btn>
     </div>
   </v-container>
 </template>
@@ -127,6 +136,8 @@
   import codes from '@/assets/codes.js'
   import GroupComp from '../../components/rdd/GroupComp.vue'
   import lodash from 'lodash'
+  import server from '@/server.js'
+  import vm from '@/main.js'
 
   export default {
     name: 'Stat',
@@ -188,6 +199,51 @@
 
       changeTask (i, j, value) {
         this.taskML[i][j] = lodash.extend(this.taskML[i][j], value)
+      },
+
+      submit_taskML () {
+        var formData = new FormData()
+        var submitTaskML = []
+        var files = []
+
+        for (var i = 0; i < this.taskML.length; ++i) {
+          var curLine = []
+          for (var j = 0; j < this.taskML[i].length; ++j) {
+            curLine.push({
+              type: this.taskML[i][j].type,
+              name: this.taskML[i][j].name,
+              numWorker: this.taskML[i][j].numWorker,
+              input: -1,
+              action: this.taskML[i][j].action,
+              code: this.taskML[i][j].code,
+            })
+            if (this.taskML[i][j].input) {
+              curLine[curLine.length - 1].input = files.length
+              files.push(this.taskML[i][j].input)
+            }
+          }
+          submitTaskML.push(curLine)
+        }
+        console.log(submitTaskML)
+
+        formData.append('taskML', JSON.stringify(submitTaskML))
+        for (var k = 0; k < files.length; ++k) {
+          formData.append('files', files[k])
+        }
+
+        console.log(formData)
+
+        server.post('/rdd', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(res => {
+          this.res = res
+          vm.$toasted.global.alert_success('Task Submitted, id: ' + res.data.task_id)
+        }, error => {
+          console.log(error)
+          vm.$toasted.global.alert_failure('Task Submit Fails')
+        })
       },
     },
 

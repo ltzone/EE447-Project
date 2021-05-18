@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
@@ -9,13 +10,46 @@ from django_celery_monitor.models import TaskState
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from backend.celery import mapper
+from backend.celery import mapper, general_rdd
 from .serializers import *
 from . import tasks
 from .models import TaskName
 
 
 MAX_FILE_LEN = 1000000
+
+@api_view(['POST'])
+def submit_general_rdd(request):
+    """
+    提交一个RDD任务，输入格式
+    @data.taskML = [
+      [
+        {
+          type: 'mapper/reducer/sort/group',
+          name: string,
+          numWorker: int,
+          input: int(0,1,...), (表示在files中的index)
+          action: true/false, (表示是否要出现在task_result/finished_task中)
+          code: string,
+        }
+      ]
+    ]
+    @data.files = list of files
+    """
+    taskML = json.loads(request.data["taskML"])
+    files = request.data.getlist('files')
+    
+    file_strings = []
+    for file in files:
+        with file.open('r') as f:
+            file_string = []
+            for l in f.readlines():
+                file_string.append(l.decode('UTF-8'))
+            file_strings.append(file_string)
+            
+    
+    res = general_rdd.delay([], taskML, file_strings)
+    return JsonResponse({'status':'successful','task_id':res.task_id})
 
 
 @api_view(['POST'])
