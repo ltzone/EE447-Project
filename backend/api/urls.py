@@ -10,6 +10,10 @@ urlpatterns = [
     path('test', views.ctest),
     path('sleep', views.sleep),
     path('submit', views.submit_task),
+<<<<<<< HEAD
+=======
+    path('mapreduce', views.submit_map_reduce),
+>>>>>>> main
     path('filtertask', views.filter_task),
     path('filterresult', views.filter_task_result),
     path('tasks2', views.task_list_with_customtaskname)

@@ -13,6 +13,32 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from backend.celery import mapper
+from .models import TaskName
+
+
+MAX_FILE_LEN = 1000000
+
+
+@api_view(['POST'])
+def submit_map_reduce(request):
+    """
+    获取，更新或删除一个snippet实例。
+    """
+    mapper_code = request.data["mapper_code"]
+    reducer_code = request.data["reducer_code"]
+    mapper_num = int(request.data["mapper_num"])
+    file = request.data["file"]
+    file_content = []
+    with file.open() as f:
+        cnt = 0
+        while cnt < MAX_FILE_LEN:
+            line = f.readline().decode('UTF-8')
+            if not line:
+                break
+            cnt += 1
+            file_content.append(line)
+    res=mapper.delay(mapper_num, file_content, mapper_code, reducer_code)
+    return JsonResponse({'status':'successful','task_id':res.task_id})
 
 @api_view(['POST'])
 def submit_task(request):
@@ -20,19 +46,23 @@ def submit_task(request):
     获取，更新或删除一个snippet实例。
     """
     code = request.data["code"]
-    res=tasks.general_exec.delay(code)  
-    #任务逻辑  
+    task_name = request.data.get("task_name")
+    if task_name is None:
+        task_name = "default_name"
+    res=tasks.general_exec.delay(code)
+    new_task = TaskName(task_name=task_name, task_id=res.task_id)
+    new_task.save()
     return Response({'status':'successful','task_id':res.task_id})
 
 def index(request):
     return HttpResponse("Hello, world. You're at the api index.")
 
 def ctest(request,*args,**kwargs):  
-    res=mapper.delay()  
+    res=mapper.delay(2, ["alice hello", "bob hello", "bye alice", "bye bob", "alice and bob"], "def mapper(input):\n\toutput = []\n\tfor line in input:\n\t\tline=line.strip()\n\t\twords=line.split()\n\t\tfor word in words:\n\t\t\toutput.append(f\"{word}\t1\")\n\treturn output", "def reducer(input):\n\treturn input")
     #任务逻辑  
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
-def sleep(request,*args,**kwargs):  
+def sleep(request,*args,**kwargs):
     res=tasks.sleep_task.delay()
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
