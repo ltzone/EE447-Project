@@ -187,9 +187,7 @@
       },
 
       changeTask (i, j, value) {
-        console.log(i, j, value)
         this.taskML[i][j] = lodash.extend(this.taskML[i][j], value)
-        console.log(this.taskML[i][j])
       },
     },
 

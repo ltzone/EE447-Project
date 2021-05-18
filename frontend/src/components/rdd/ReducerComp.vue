@@ -10,8 +10,8 @@
           elevation="2"
           shaped
         >
-          <h4> Reducer [{{ name }}] </h4>
-          <strong> {{ numWorker }} workers </strong>
+          <h4> Reducer [{{ nameLocal }}] </h4>
+          <strong> {{ numWorkerLocal }} workers </strong>
           <v-btn
             color="red lighten-2"
             dark
@@ -31,24 +31,24 @@
         <v-row>
           <v-col>
             <codemirror
-              v-model="code"
+              v-model="codeLocal"
               :options="cmOptions"
             />
           </v-col>
         </v-row>
         <v-row>
           <v-checkbox
-            v-model="action"
+            v-model="actionLocal"
             label="Activate Output"
             class="mx-3"
           />
           <v-text-field
-            v-model="name"
+            v-model="nameLocal"
             class="mx-3"
             label="Reducer name"
           />
           <v-text-field
-            v-model="numWorker"
+            v-model="numWorkerLocal"
             class="mx-3"
             label="Number of Reducers"
           />
@@ -61,7 +61,7 @@
           <v-btn
             color="primary"
             text
-            @click="dialog = false"
+            @click="close"
           >
             Close
           </v-btn>
@@ -78,7 +78,7 @@
   import 'codemirror/theme/solarized.css'
 
   export default {
-    name: 'ReducerComp',
+    name: 'MapComp',
 
     props: {
       code: {
@@ -110,15 +110,56 @@
           line: true,
           // more CodeMirror options...
         },
+        curTask: {},
       }
     },
 
     computed: {
+      codeLocal: {
+        get: function () {
+          return this.code
+        },
+        set: function (value) {
+          this.curTask.code = value
+        },
+      },
+
+      nameLocal: {
+        get: function () {
+          return this.name
+        },
+        set: function (value) {
+          this.curTask.name = value
+        },
+      },
+
+      numWorkerLocal: {
+        get: function () {
+          return this.numWorker
+        },
+        set: function (value) {
+          this.curTask.numWorker = Number(value)
+        },
+      },
+
+      actionLocal: {
+        get: function () {
+          return this.action
+        },
+        set: function (value) {
+          this.curTask.action = value
+        },
+      },
+    },
+
+    watch: {
+
     },
 
     methods: {
       close () {
         this.dialog = false
+        this.$emit('dialogData', this.curTask)
       },
     },
   }

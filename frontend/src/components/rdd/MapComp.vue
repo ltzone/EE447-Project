@@ -180,7 +180,6 @@
       close () {
         this.dialog = false
         this.$emit('dialogData', this.curTask)
-        console.log(this.curTask)
       },
     },
   }
