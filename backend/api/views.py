@@ -46,11 +46,11 @@ def submit_task(request):
     获取，更新或删除一个snippet实例。
     """
     code = request.data["code"]
-    task_name = request.data.get("task_name")
-    if task_name is None:
-        task_name = "default_name"
+    custom_task_name = request.data.get("custom_task_name")
+    if custom_task_name is None:
+        custom_task_name = "default_name"
     res=tasks.general_exec.delay(code)
-    new_task = TaskName(task_name=task_name, task_id=res.task_id)
+    new_task = TaskName(custom_task_name=custom_task_name, task_id=res.task_id)
     new_task.save()
     return Response({'status':'successful','task_id':res.task_id})
 
@@ -64,6 +64,9 @@ def ctest(request,*args,**kwargs):
 
 def sleep(request,*args,**kwargs):
     res=tasks.sleep_task.delay()
+    custom_task_name = request.data.get("task_name")
+    new_task = TaskName(task_name=custom_task_name, task_id=res.task_id)
+    new_task.save()
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
 class JSONResponse(HttpResponse):
@@ -110,6 +113,7 @@ def filter_reduce(request:HttpRequest):
 
 @api_view(['GET'])
 def task_list_with_customtaskname(request):
+    query_custom_task_name = request.GET['custom_task_name']
     res = TaskwithCustomTaskName.objects.all()
     serializer = TaskwithCustomTaskNameSerializer(res, many=True)
     return JSONResponse(serializer.data)

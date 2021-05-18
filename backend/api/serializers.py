@@ -25,7 +25,7 @@ class TaskwithCustomTaskNameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskwithCustomTaskName
-        fields = ('custom_taskname', 'taskstate')
+        fields = ('custom_task_name', 'taskstate')
 
     def create(self, validated_data):
         taskstate_data = validated_data.pop('taskstate')
@@ -36,7 +36,7 @@ class TaskwithCustomTaskNameSerializer(serializers.ModelSerializer):
         taskstate_data = validated_data.pop('taskstate')
         taskstate = instance.taskstate
 
-        instance.custom_taskname = validated_data.get('custom_taskname', instance.custom_taskname)
+        instance.custom_taskname = validated_data.get('custom_task_name', instance.custom_task_name)
         instance.save()
 
         taskstate.update(taskstate, taskstate_data)

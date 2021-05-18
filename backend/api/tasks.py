@@ -26,4 +26,4 @@ def sleep_task():
 
 class TaskwithCustomTaskName(TaskState):
 
-    custom_taskname = models.CharField(_('custom task name'), max_length=200, null=True, db_index=True,)
+    custom_task_name = models.CharField(_('custom task name'), max_length=200, null=True, db_index=True,)
