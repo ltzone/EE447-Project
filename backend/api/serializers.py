@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django_celery_results.models import TaskResult
 from django_celery_monitor.models import TaskState
-from .tasks import TaskwithCustomTaskName
+from .models import TaskName
 
 
 class TaskResSerializer(serializers.ModelSerializer):
@@ -20,26 +20,7 @@ class TaskSerializer(serializers.ModelSerializer):
                   'retries', 'worker', 'hidden')
 
 
-class TaskwithCustomTaskNameSerializer(serializers.ModelSerializer):
-    taskstate = TaskSerializer()
-
+class TaskNameSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TaskwithCustomTaskName
-        fields = ('custom_task_name', 'taskstate')
-
-    def create(self, validated_data):
-        taskstate_data = validated_data.pop('taskstate')
-        task_custom_taskname = TaskwithCustomTaskName.objects.create(**validated_data)
-        TaskState.objects.create(task_custom_taskname=task_custom_taskname, **taskstate_data)
-
-    def update(self, instance, validated_data):
-        taskstate_data = validated_data.pop('taskstate')
-        taskstate = instance.taskstate
-
-        instance.custom_taskname = validated_data.get('custom_task_name', instance.custom_task_name)
-        instance.save()
-
-        taskstate.update(taskstate, taskstate_data)
-        taskstate.save()
-
-        return instance
+        model = TaskName
+        fields = ("custom_task_name", "task_id")

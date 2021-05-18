@@ -3,16 +3,15 @@ from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from .serializers import TaskSerializer, TaskResSerializer, TaskwithCustomTaskNameSerializer
 from django_celery_results.models import TaskResult
 # Create your views here.
-from . import tasks
-from .tasks import TaskwithCustomTaskName
 from django_celery_monitor.models import TaskState
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from backend.celery import mapper
+from .serializers import *
+from . import tasks
 from .models import TaskName
 
 
@@ -63,9 +62,11 @@ def ctest(request,*args,**kwargs):
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
 def sleep(request,*args,**kwargs):
+    custom_task_name = "hello"
+    if custom_task_name is None:
+        custom_task_name = "default_name"
     res=tasks.sleep_task.delay()
-    custom_task_name = request.data.get("task_name")
-    new_task = TaskName(task_name=custom_task_name, task_id=res.task_id)
+    new_task = TaskName(custom_task_name=custom_task_name, task_id=res.task_id)
     new_task.save()
     return JsonResponse({'status':'successful','task_id':res.task_id})
 
@@ -90,17 +91,16 @@ def task_list(request):
     serializer = TaskSerializer(res, many=True)
     return JSONResponse(serializer.data)
 
-# 用法: http://127.0.0.1:8000/api/filtertask?state=SUCCESS 返回json，下同
 @api_view(['GET'])
 def filter_task(request:HttpRequest):
-    query_state = request.GET['state'] # request.GET返回的是QueryDict类型的字典
+    query_state = request.data.get('state')
     res = TaskState.objects.filter(state=query_state)
     serializer = TaskSerializer(res, many=True)
     return JSONResponse(serializer.data)
 
 @api_view(['GET'])
 def filter_task_result(request):
-    query_state = request.GET['state']
+    query_state = request.data.get('state')
     res = TaskResult.objects.filter(status=query_state)
     serializer = TaskResSerializer(res, many=True)
     return JSONResponse(serializer.data)
@@ -112,8 +112,23 @@ def filter_reduce(request:HttpRequest):
     return JSONResponse(serializer.data)
 
 @api_view(['GET'])
-def task_list_with_customtaskname(request):
-    query_custom_task_name = request.GET['custom_task_name']
-    res = TaskwithCustomTaskName.objects.all()
-    serializer = TaskwithCustomTaskNameSerializer(res, many=True)
-    return JSONResponse(serializer.data)
+def task_list_with_customtaskname(request:HttpRequest):
+    query_custom_task_name = request.data.get("custom_task_name")
+    task_name_object = TaskName.objects.filter(custom_task_name=query_custom_task_name)
+    task_name_serializer = TaskNameSerializer(task_name_object, many=True)
+
+    id2name = dict()
+    for item in task_name_serializer.data:
+        id2name[item["task_id"]] = item["custom_task_name"]
+
+    ans = list()
+
+    for idx, ctm_name in id2name.items():
+        temp_dict = dict()
+        res = TaskState.objects.get(task_id=idx)
+        serializer = TaskSerializer(res)
+        temp_dict = serializer.data.copy()
+        temp_dict['custom_task_name'] = ctm_name
+        ans.append(temp_dict)
+
+    return JSONResponse(ans)

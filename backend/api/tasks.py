@@ -23,7 +23,3 @@ def hello():
 def sleep_task():
     time.sleep(30)
     return f"Sleeped"
-
-class TaskwithCustomTaskName(TaskState):
-
-    custom_task_name = models.CharField(_('custom task name'), max_length=200, null=True, db_index=True,)
