@@ -103,6 +103,12 @@ def filter_task_result(request):
     return JSONResponse(serializer.data)
 
 @api_view(['GET'])
+def filter_reduce(request:HttpRequest):
+    res = TaskState.objects.filter(name="ic.reduce")
+    serializer = TaskSerializer(res, many=True)
+    return JSONResponse(serializer.data)
+
+@api_view(['GET'])
 def task_list_with_customtaskname(request):
     res = TaskwithCustomTaskName.objects.all()
     serializer = TaskwithCustomTaskNameSerializer(res, many=True)
