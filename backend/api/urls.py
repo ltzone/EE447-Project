@@ -16,11 +16,21 @@ urlpatterns = [
     path('test', views.ctest),
     path('sleep', views.sleep),
 
-     # 提交任务
+    # 提交任务
     path('submit', views.submit_task),
-    path('mapreduce', views.submit_map_reduce), # 提交mapreduce任务
-    path('filtertask', views.filter_task), # 根据request.data.get("state")筛选特定state的TaskState
-    path('filterresult', views.filter_task_result), # 根据request.data.get("state")筛选特定state的TaskResult
-    path('filterreduce', views.filter_reduce), # 筛选出reduce任务的TaskState，无需参数
-    path('tasks2', views.task_list_with_customtaskname) # 根据request.data.get("custom_task_name")筛选特定自定义用户名的TaskState
+
+    # 提交mapreduce任务
+    path('mapreduce', views.submit_map_reduce),
+
+    # 根据request.data.get("state")筛选特定state的TaskState
+    path('filtertask', views.filter_task),
+
+    # 根据request.data.get("state")筛选特定state的TaskResult
+    path('filterresult', views.filter_task_result),
+
+    # 筛选出reduce任务的TaskState，无需参数
+    path('filterreduce', views.filter_reduce),
+
+    # 根据request.data.get("custom_task_name")筛选特定自定义用户名的TaskState
+    path('tasks2', views.task_list_with_customtaskname)
 ]
