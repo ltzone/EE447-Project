@@ -89,7 +89,18 @@ def task_result_list(request):
 def task_list(request):
     res = TaskState.objects.all()
     serializer = TaskSerializer(res, many=True)
-    return JSONResponse(serializer.data)
+    ans = list()
+    for item in serializer.data:
+        temp_dict = item.copy()
+        if TaskName.objects.filter(task_id=item['task_id']).count() == 0:
+            custom_task_name = 'none'
+        else:
+            task_name_obj = TaskName.objects.get(task_id=item['task_id'])
+            task_name_serializer = TaskNameSerializer(task_name_obj)
+            custom_task_name = task_name_serializer.data['custom_task_name']
+        temp_dict['custom_task_name'] = custom_task_name
+        ans.append(temp_dict)
+    return JSONResponse(ans)
 
 @api_view(['GET'])
 def filter_task(request:HttpRequest):
