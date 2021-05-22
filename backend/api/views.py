@@ -126,6 +126,8 @@ def task_list(request):
     ans = list()
     for item in serializer.data:
         temp_dict = item.copy()
+
+        # 加入custom_task_name字段
         if TaskName.objects.filter(task_id=item['task_id']).count() == 0:
             custom_task_name = 'none'
         else:
@@ -133,6 +135,13 @@ def task_list(request):
             task_name_serializer = TaskNameSerializer(task_name_obj)
             custom_task_name = task_name_serializer.data['custom_task_name']
         temp_dict['custom_task_name'] = custom_task_name
+
+        # 把worker字段从id转为hostname
+        worker_id = temp_dict['worker']
+        worker_obj = WorkerState.objects.get(id=worker_id)
+        worker_name = WorkerStateSerializer(worker_obj).data["hostname"]
+        temp_dict['worker'] = worker_name
+
         ans.append(temp_dict)
     return JSONResponse(ans)
 
@@ -177,3 +186,16 @@ def task_list_with_customtaskname(request:HttpRequest):
         ans.append(temp_dict)
 
     return JSONResponse(ans)
+
+@api_view(['GET'])
+def get_result_by_taskid(request):
+    query_id = request.data.get('task_id')
+    res = TaskResult.objects.get(task_id=query_id)
+    serializer = ResultSerializer(res)
+    return JSONResponse(serializer.data) # 返回一个{"result":...}的字典
+
+@api_view(['GET'])
+def list_workers(request):
+    res = WorkerState.objects.all()
+    serializer = WorkerStateSerializer(res, many=True)
+    return JSONResponse(serializer.data) # 返回一个{"hostname":..., "last_heartbeat":..., "last_update":...}的字典

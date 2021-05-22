@@ -30,6 +30,15 @@ urlpatterns = [
 
     # 筛选出reduce任务的TaskState，无需参数
     path('filterreduce', views.filter_reduce),
+
+    # 根据request.data.get("custom_task_name")筛选特定state的TaskState
     path('tasks2', views.task_list_with_customtaskname),
-    path('rdd', views.submit_general_rdd)
+
+    path('rdd', views.submit_general_rdd),
+    
+    # 通过task_id查询TaskResult并返回它的result
+    path('getresultbyid', views.get_result_by_taskid),
+
+    # 列举所有的worker
+    path('workers', views.list_workers)
 ]
