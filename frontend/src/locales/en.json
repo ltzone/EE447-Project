@@ -48,5 +48,6 @@
   "Applications": "Applications",
   "Statistics": "Statistics",
   "Tasks": "Tasks",
-  "TaskResult": "TaskResult"
+  "TaskResult": "TaskResult",
+  "Workers":"Workers"
 }

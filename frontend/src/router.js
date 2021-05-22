@@ -33,6 +33,11 @@ export default new Router({
           component: () => import('@/views/distributed/Tasks'),
         },
         {
+          path: 'distributed/workers',
+          name: 'Workers',
+          component: () => import('@/views/distributed/Workers'),
+        },
+        {
           path: 'distributed/taskresult',
           name: 'TaskResult',
           component: () => import('@/views/distributed/TaskResult'),

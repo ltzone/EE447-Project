@@ -101,9 +101,14 @@
           to: '/distributed/task',
         },
         {
-          icon: 'mdi-file-tree',
+          icon: 'mdi-file-tree-outline',
           title: 'TaskResult',
           to: '/distributed/taskresult',
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Workers',
+          to: '/distributed/workers',
         },
         {
           icon: 'mdi-equalizer',
