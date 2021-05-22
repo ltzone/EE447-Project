@@ -55,12 +55,11 @@
           </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn
+          <v-icon
             color="primary"
-            @click="initialize"
           >
-            Reset
-          </v-btn>
+            mdi-loading
+          </v-icon>
         </template>
       </v-data-table>
     </base-material-card>
@@ -149,9 +148,15 @@
               ob.worker = res.data[i].worker
               ob.date_done = res.data[i].date_done
               if (res.data[i].status === 'SUCCESS') {
-                de.push(res.data[i].result)
+                var li = JSON.parse(res.data[i].result)
+                var line = ''
+                for (var id = 0; id < li.length; id++) {
+                  line = line.concat(li[id].split('\t')[0])
+                  line = line.concat('\t')
+                }
+                de.push(line)
               } else {
-                de.push(res.data[i].traceback)
+                de.push(JSON.parse(res.data[i].traceback))
               }
               ta.push(ob)
               st.push(res.data[i].status)

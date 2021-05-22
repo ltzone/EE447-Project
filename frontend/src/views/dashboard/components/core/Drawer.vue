@@ -116,11 +116,6 @@
           to: '/distributed/app',
         },
         {
-          icon: 'mdi-eye',
-          title: 'Monitor',
-          to: '/distributed/monitor',
-        },
-        {
           icon: 'mdi-arrow-up-box',
           title: 'Submit',
           to: '/distributed/submit',
@@ -129,36 +124,6 @@
           icon: 'mdi-information',
           title: 'About',
           to: '/distributed/information',
-        },
-        {
-          icon: 'mdi-view-dashboard',
-          title: 'dashboard',
-          to: '/',
-        },
-        {
-          icon: 'mdi-account',
-          title: 'user',
-          to: '/pages/user',
-        },
-        {
-          title: 'rtables',
-          icon: 'mdi-clipboard-outline',
-          to: '/tables/regular-tables',
-        },
-        {
-          title: 'typography',
-          icon: 'mdi-format-font',
-          to: '/components/typography',
-        },
-        {
-          title: 'icons',
-          icon: 'mdi-chart-bubble',
-          to: '/components/icons',
-        },
-        {
-          title: 'notifications',
-          icon: 'mdi-bell',
-          to: '/components/notifications',
         },
       ],
     }),

@@ -63,6 +63,7 @@
           { text: 'State', value: 'state' },
           { text: 'Worker', value: 'worker' },
         ],
+        success: [],
         running: [],
         others: [],
       }
