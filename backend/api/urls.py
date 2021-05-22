@@ -30,7 +30,6 @@ urlpatterns = [
 
     # 筛选出reduce任务的TaskState，无需参数
     path('filterreduce', views.filter_reduce),
-
-    # 根据request.data.get("custom_task_name")筛选特定自定义用户名的TaskState
-    path('tasks2', views.task_list_with_customtaskname)
+    path('tasks2', views.task_list_with_customtaskname),
+    path('rdd', views.submit_general_rdd)
 ]
