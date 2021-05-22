@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django_celery_results.models import TaskResult
-from django_celery_monitor.models import TaskState
-from .tasks import TaskwithCustomTaskName
+from django_celery_monitor.models import TaskState, WorkerState
+from .models import TaskName
 
 
 class TaskResSerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class TaskResSerializer(serializers.ModelSerializer):
         model = TaskResult
         fields = ('task_id', 'task_name', 'task_args', 'task_kwargs',
                   'status', 'worker', 'content_type', 'content_encoding',
-                  'result', 'date_created', 'date_done', 'traceback', 'meta')
+                  'date_created', 'date_done', 'traceback', 'meta')
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -20,26 +20,17 @@ class TaskSerializer(serializers.ModelSerializer):
                   'retries', 'worker', 'hidden')
 
 
-class TaskwithCustomTaskNameSerializer(serializers.ModelSerializer):
-    taskstate = TaskSerializer()
-
+class TaskNameSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TaskwithCustomTaskName
-        fields = ('custom_taskname', 'taskstate')
+        model = TaskName
+        fields = ("custom_task_name", "task_id")
 
-    def create(self, validated_data):
-        taskstate_data = validated_data.pop('taskstate')
-        task_custom_taskname = TaskwithCustomTaskName.objects.create(**validated_data)
-        TaskState.objects.create(task_custom_taskname=task_custom_taskname, **taskstate_data)
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskResult
+        fields = list(['result'])
 
-    def update(self, instance, validated_data):
-        taskstate_data = validated_data.pop('taskstate')
-        taskstate = instance.taskstate
-
-        instance.custom_taskname = validated_data.get('custom_taskname', instance.custom_taskname)
-        instance.save()
-
-        taskstate.update(taskstate, taskstate_data)
-        taskstate.save()
-
-        return instance
+class WorkerStateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkerState
+        fields = ("hostname", "last_heartbeat", "last_update")

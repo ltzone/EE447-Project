@@ -5,13 +5,40 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+
+    # 得到运行结果 TaskResult列表
     path('get', views.task_result_list),
+
+    # 得到task运行实时状态 TaskState列表
     path('tasks', views.task_list),
+
+    # 仅用于调试的简单任务，
     path('test', views.ctest),
     path('sleep', views.sleep),
+
+    # 提交任务
     path('submit', views.submit_task),
+
+    # 提交mapreduce任务
     path('mapreduce', views.submit_map_reduce),
+
+    # 根据request.data.get("state")筛选特定state的TaskState
     path('filtertask', views.filter_task),
+
+    # 根据request.data.get("state")筛选特定state的TaskResult
     path('filterresult', views.filter_task_result),
-    path('tasks2', views.task_list_with_customtaskname)
+
+    # 筛选出reduce任务的TaskState，无需参数
+    path('filterreduce', views.filter_reduce),
+
+    # 根据request.data.get("custom_task_name")筛选特定state的TaskState
+    path('tasks2', views.task_list_with_customtaskname),
+
+    path('rdd', views.submit_general_rdd),
+    
+    # 通过task_id查询TaskResult并返回它的result
+    path('getresultbyid', views.get_result_by_taskid),
+
+    # 列举所有的worker
+    path('workers', views.list_workers)
 ]
