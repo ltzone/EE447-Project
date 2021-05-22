@@ -1,6 +1,62 @@
 <template>
   <div class="text-center">
-    <v-dialog
+    <base-material-card
+      color="blue"
+      class="px-5 py-3"
+    >
+      <template v-slot:heading>
+        <div class="text-h3 font-weight-light">
+          Reducer
+        </div>
+
+        <div class="text-subtitle-1 font-weight-light">
+          {{ nameLocal }}
+        </div>
+      </template>
+      <v-card-text>
+        <v-row>
+          <v-file-input
+            label="Upload a file if there is an input, otherwise the transformation will take the output of the last layer as input."
+            v-model="inputLocal"
+            show-size
+            truncate-length="15"
+          />
+        </v-row>
+        <v-row>
+          <v-col style="text-align:left;">
+            <codemirror
+              v-model="codeLocal"
+              :options="cmOptions"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-checkbox
+            v-model="actionLocal"
+            label="Activate Output"
+            class="mx-3"
+          />
+          <v-text-field
+            v-model="nameLocal"
+            class="mx-3"
+            label="Reducer name"
+          />
+          <v-text-field
+            v-model="numWorkerLocal"
+            class="mx-3"
+            label="Number of Reducers"
+          />
+          <v-btn
+            color="blue lighten-2"
+            dark
+            @click="close"
+          >
+            Confirm
+          </v-btn>
+        </v-row>
+      </v-card-text>
+    </base-material-card>
+    <!-- <v-dialog
       v-model="dialog"
       width="80%"
     >
@@ -68,7 +124,7 @@
           <v-spacer />
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </div>
 </template>
 

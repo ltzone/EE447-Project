@@ -1,6 +1,41 @@
 <template>
   <div class="text-center">
-    <v-dialog
+        <base-material-card
+      color="orange"
+      class="px-5 py-3"
+    >
+      <template v-slot:heading>
+        <div class="text-h3 font-weight-light">
+          Sorter
+        </div>
+
+        <div class="text-subtitle-1 font-weight-light">
+          {{ nameLocal }}
+        </div>
+      </template>
+      <v-card-text>
+        <v-row>
+          <v-checkbox
+            v-model="actionLocal"
+            label="Activate Output"
+            class="mx-3"
+          />
+          <v-text-field
+            v-model="nameLocal"
+            class="mx-3"
+            label="Sorter name"
+          />
+          <v-btn
+            color="orange lighten-2"
+            dark
+            @click="close"
+          >
+            Confirm
+          </v-btn>
+        </v-row>
+      </v-card-text>
+    </base-material-card>
+    <!-- <v-dialog
       v-model="dialog"
       width="80%"
     >
@@ -50,7 +85,7 @@
           <v-spacer />
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </div>
 </template>
 

@@ -35,7 +35,7 @@
         </div>
       </v-col>
       <v-col
-        cols="2"
+        cols="1"
       >
         <div
           class="text-center"
@@ -68,6 +68,7 @@
               >
                 <v-list-item-action>
                   <v-btn
+                    small
                     color="primary"
                     @click="addcol(i, item)"
                   >
@@ -105,7 +106,7 @@
           >
             <v-list-item-action>
               <v-btn
-                color="primary"
+                :color="colors[idx]"
                 @click="addrow(item)"
               >
                 {{ item }}
@@ -116,7 +117,7 @@
       </v-menu>
 
       <v-btn
-        color="indigo"
+        color="green"
         dark
         @click="submit_taskML"
         class="mx-4"
@@ -154,6 +155,7 @@
       return {
         taskML: [],
         additems: ['mapper', 'reducer', 'sort', 'group'],
+        colors: ['pink', 'blue', 'orange', 'green'],
         menu: false,
         colmenu: [],
       }

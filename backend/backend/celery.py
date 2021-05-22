@@ -116,7 +116,7 @@ def rdd_group(last_output):
     output_list = []
     for k,vs in output_dict.items():
         for v in vs:
-            output_dict.append(k + v)
+            output_list.append(k +'\t' + v)
     return output_list
 
 """
